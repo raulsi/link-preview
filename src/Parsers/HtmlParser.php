@@ -172,6 +172,35 @@ class HtmlParser extends BaseParser implements ParserInterface
 
                 $images[] = $image->getAttribute('src');
             }
+
+
+            foreach($parser->filter('link[rel="apple-touch-icon"]') as $image) {
+                if (!$image->hasAttribute('href')) continue;
+                if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
+                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) continue;
+                };
+
+                // This is not bulletproof, actual image maybe bigger than tags
+                if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
+                if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
+
+                $images[] = $image->getAttribute('href');
+            }
+
+            foreach($parser->filter('link[rel="shortcut icon"]') as $image) {
+                if (!$image->hasAttribute('href')) continue;
+                if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
+                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) continue;
+                };
+
+                // This is not bulletproof, actual image maybe bigger than tags
+                if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
+                if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
+
+                $images[] = $image->getAttribute('href');
+            }
         } catch (\InvalidArgumentException $e) {
             // Ignore exceptions
         }
