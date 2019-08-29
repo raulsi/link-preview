@@ -27,6 +27,11 @@ class HtmlPreview implements PreviewInterface
     private $images = [];
 
     /**
+     * @var array Images found while parsing the link
+     */
+    private $logos = [];
+
+    /**
      * @var string $title Link title
      */
     private $title;
@@ -52,5 +57,6 @@ class HtmlPreview implements PreviewInterface
         'description',
         'video',
         'videoType',
+        'logos',
     ];
 }

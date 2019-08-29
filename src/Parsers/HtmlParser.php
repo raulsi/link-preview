@@ -138,6 +138,7 @@ class HtmlParser extends BaseParser implements ParserInterface
     protected function parseHtml(LinkInterface $link)
     {
         $images = [];
+        $logos = [];
 
         try {
             $parser = new Crawler();
@@ -178,37 +179,49 @@ class HtmlParser extends BaseParser implements ParserInterface
                 if (!$image->hasAttribute('href')) continue;
                 if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
                   $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
-                  if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) continue;
                 };
 
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
                 if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
 
-                $images[] = $image->getAttribute('href');
+                $logos[] = $image->getAttribute('href');
             }
 
             foreach($parser->filter('link[rel="shortcut icon"]') as $image) {
                 if (!$image->hasAttribute('href')) continue;
                 if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
                   $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
-                  if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) continue;
                 };
 
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
                 if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
 
-                $images[] = $image->getAttribute('href');
+                $logos[] = $image->getAttribute('href');
+            }
+
+            foreach($parser->filter('link[rel="icon"]') as $image) {
+                if (!$image->hasAttribute('href')) continue;
+                if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
+                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                };
+
+                // This is not bulletproof, actual image maybe bigger than tags
+                if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
+                if ($image->hasAttribute('height') && $image->getAttribute('height') < $this->imageMinimumHeight) continue;
+
+                $logos[] = $image->getAttribute('href');
             }
         } catch (\InvalidArgumentException $e) {
             // Ignore exceptions
         }
 
         $images = array_unique($images);
+        $logos = array_unique($logos);
 
         if (!isset($cover) && count($images)) $cover = $images[0];
 
-        return compact('cover', 'title', 'description', 'images', 'video', 'videoType');
+        return compact('cover', 'title', 'description', 'images', 'video', 'videoType', 'logos');
     }
 }

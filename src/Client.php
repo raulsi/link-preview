@@ -6,6 +6,7 @@ use Dusterio\LinkPreview\Contracts\ParserInterface;
 use Dusterio\LinkPreview\Contracts\PreviewInterface;
 use Dusterio\LinkPreview\Parsers\HtmlParser;
 use Dusterio\LinkPreview\Parsers\YouTubeParser;
+use Dusterio\LinkPreview\Parsers\SoundcloudParser;
 use Dusterio\LinkPreview\Parsers\VimeoParser;
 use Dusterio\LinkPreview\Models\Link;
 use Dusterio\LinkPreview\Exceptions\UnknownParserException;
@@ -149,6 +150,7 @@ class Client
     {
         $this->addParser(new HtmlParser());
         $this->addParser(new YouTubeParser());
+        $this->addParser(new SoundcloudParser());
         $this->addParser(new VimeoParser());
     }
 }
