@@ -32,6 +32,11 @@ class HtmlPreview implements PreviewInterface
     private $logos = [];
 
     /**
+     * @var string $name Link brand name
+     */
+    private $name;
+
+    /**
      * @var string $title Link title
      */
     private $title;
@@ -53,6 +58,7 @@ class HtmlPreview implements PreviewInterface
     private $fields = [
         'cover',
         'images',
+        'name',
         'title',
         'description',
         'video',

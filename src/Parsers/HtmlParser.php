@@ -29,10 +29,16 @@ class HtmlParser extends BaseParser implements ParserInterface
             ['selector' => 'meta[itemprop="image"]', 'attribute' => 'content'],
         ],
 
+
+        'name' => [
+            ['selector' => 'meta[property="twitter:name"]', 'attribute' => 'content'],
+            ['selector' => 'meta[property="og:name"]', 'attribute' => 'content'],
+            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content']
+        ],
+
         'title' => [
             ['selector' => 'meta[property="twitter:title"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:title"]', 'attribute' => 'content'],
-            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
             ['selector' => 'title']
         ],
 
@@ -222,6 +228,6 @@ class HtmlParser extends BaseParser implements ParserInterface
 
         if (!isset($cover) && count($images)) $cover = $images[0];
 
-        return compact('cover', 'title', 'description', 'images', 'video', 'videoType', 'logos');
+        return compact('cover', 'name', 'title', 'description', 'images', 'video', 'videoType', 'logos');
     }
 }
