@@ -31,9 +31,10 @@ class HtmlParser extends BaseParser implements ParserInterface
 
 
         'name' => [
+            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="twitter:name"]', 'attribute' => 'content'],
             ['selector' => 'meta[property="og:name"]', 'attribute' => 'content'],
-            ['selector' => 'meta[itemprop="name"]', 'attribute' => 'content']
+            ['selector' => 'meta[property="og:site_name"]', 'attribute' => 'content']
         ],
 
         'title' => [
