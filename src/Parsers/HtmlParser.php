@@ -185,7 +185,12 @@ class HtmlParser extends BaseParser implements ParserInterface
             foreach($parser->filter('link[rel="apple-touch-icon"]') as $image) {
                 if (!$image->hasAttribute('href')) continue;
                 if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
-                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  preg_match('/^(\/\/)*/', $image->getAttribute('href'), $output_array);
+                  if (count($output_array)) {
+                    $image->setAttribute('href', preg_replace('/^(\/\/)*/', 'https:$0', $image->getAttribute('href')));
+                  }else {
+                    $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  }
                 };
 
                 // This is not bulletproof, actual image maybe bigger than tags
@@ -198,7 +203,12 @@ class HtmlParser extends BaseParser implements ParserInterface
             foreach($parser->filter('link[rel="shortcut icon"]') as $image) {
                 if (!$image->hasAttribute('href')) continue;
                 if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
-                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  preg_match('/^(\/\/)*/', $image->getAttribute('href'), $output_array);
+                  if (count($output_array)) {
+                    $image->setAttribute('href', preg_replace('/^(\/\/)*/', 'https:$0', $image->getAttribute('href')));
+                  }else {
+                    $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  }
                 };
 
                 // This is not bulletproof, actual image maybe bigger than tags
@@ -211,7 +221,12 @@ class HtmlParser extends BaseParser implements ParserInterface
             foreach($parser->filter('link[rel="icon"]') as $image) {
                 if (!$image->hasAttribute('href')) continue;
                 if (filter_var($image->getAttribute('href'), FILTER_VALIDATE_URL) === false) {
-                  $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  preg_match('/^(\/\/)*/', $image->getAttribute('href'), $output_array);
+                  if (count($output_array)) {
+                    $image->setAttribute('href', preg_replace('/^(\/\/)*/', 'https:$0', $image->getAttribute('href')));
+                  }else {
+                    $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
+                  }
                 };
 
                 // This is not bulletproof, actual image maybe bigger than tags
