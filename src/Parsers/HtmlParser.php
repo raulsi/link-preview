@@ -191,7 +191,7 @@ class HtmlParser extends BaseParser implements ParserInterface
                   }else {
                     $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
                   }
-                };
+                }
 
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
@@ -209,7 +209,7 @@ class HtmlParser extends BaseParser implements ParserInterface
                   }else {
                     $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
                   }
-                };
+                }
 
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
@@ -227,7 +227,7 @@ class HtmlParser extends BaseParser implements ParserInterface
                   }else {
                     $image->setAttribute('href', $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$image->getAttribute('href'));
                   }
-                };
+                }
 
                 // This is not bulletproof, actual image maybe bigger than tags
                 if ($image->hasAttribute('width') && $image->getAttribute('width') < $this->imageMinimumWidth) continue;
@@ -242,7 +242,18 @@ class HtmlParser extends BaseParser implements ParserInterface
         $images = array_unique($images);
         $logos = array_unique($logos);
 
-        if (!isset($cover) && count($images)) $cover = $images[0];
+        if (!isset($cover) && count($images)){
+          $cover = $images[0];
+        }else {
+          if (filter_var($cover, FILTER_VALIDATE_URL) === false) {
+            preg_match('/^\/\/\/*/', $cover, $output_array);
+            if (count($output_array)) {
+              $cover = preg_replace('/^\/\/\/*/', 'https:$0', $cover);
+            }else {
+              $cover = $link->getEffectiveUrl()->getScheme()."://".$link->getEffectiveUrl()->getHost()."/".$cover;
+            }
+          }
+        }
 
         return compact('cover', 'name', 'title', 'description', 'images', 'video', 'videoType', 'logos');
     }
