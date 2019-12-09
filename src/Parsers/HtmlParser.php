@@ -245,7 +245,7 @@ class HtmlParser extends BaseParser implements ParserInterface
         if (!isset($cover) && count($images)){
           $cover = $images[0];
         }else {
-          if (filter_var($cover, FILTER_VALIDATE_URL) === false) {
+          if (filter_var($cover, FILTER_VALIDATE_URL) === false && $cover != '') {
             preg_match('/^\/\/\/*/', $cover, $output_array);
             if (count($output_array)) {
               $cover = preg_replace('/^\/\/\/*/', 'https:$0', $cover);
